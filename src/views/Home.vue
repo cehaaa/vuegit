@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import GithubService from "@/service/GithubService";
 
 export default {
     data() {
@@ -53,14 +53,12 @@ export default {
     },
 
     methods: {
-        getUserData() {
+        async getUserData() {
             this.search = !this.search;
 
-            axios
-                .get(`https://api.github.com/users/${this.username}`)
-                .then((res) => {
-                    this.githubData = res.data;
-                });
+            const res = await GithubService.searchUser(this.username)
+                .then((res) => (this.githubData = res.data))
+                .catch((err) => console.log(err));
         },
     },
 };
